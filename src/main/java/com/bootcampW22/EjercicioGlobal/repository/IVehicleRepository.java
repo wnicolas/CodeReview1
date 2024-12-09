@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface IVehicleRepository {
     List<Vehicle> findAll();
+
+    Vehicle addVehicle(Vehicle vehicle);
+
+    Vehicle searchVehicleById(Long id);
 }

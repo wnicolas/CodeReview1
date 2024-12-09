@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IVehicleService {
     List<VehicleDto> searchAllVehicles();
+
+    VehicleDto addVehicle(VehicleDto vehicleDto);
 }
