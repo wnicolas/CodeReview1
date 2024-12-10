@@ -69,4 +69,10 @@ public class VehicleServiceImpl implements IVehicleService {
         }
         return listVehicles.stream().map(x -> mapper.convertValue(x, VehicleDto.class)).toList();
     }
+
+    @Override
+    public double getCapacidadPromedio(String brand) {
+        return vehicleRepository.findAll().stream().filter(x->x.getBrand().equalsIgnoreCase(brand))
+        .mapToInt(Vehicle::getPassengers).average().orElse(0.0);
+    }
 }

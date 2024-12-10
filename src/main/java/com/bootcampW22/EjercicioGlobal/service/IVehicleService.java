@@ -14,4 +14,6 @@ public interface IVehicleService {
     List<VehicleDto> getByBrandAndYearRange(String brand, int startYear, int endYear);
 
     List<VehicleDto> findByDimensionRange(double minLength, double maxLength, double minWidth, double maxWidth);
+
+    double getCapacidadPromedio(String brand);
 }

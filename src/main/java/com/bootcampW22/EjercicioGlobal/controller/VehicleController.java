@@ -55,4 +55,10 @@ public class VehicleController {
         return new ResponseEntity<List<VehicleDto>>(vehicleService.findByDimensionRange(Double.parseDouble(len[0]),
                 Double.parseDouble(len[1]), Double.parseDouble(wid[0]), Double.parseDouble(wid[1])), HttpStatus.OK);
     }
+
+    @GetMapping("/average_capacity/brand/{brand}")
+    public ResponseEntity<String> getCapacidadPromedio(@PathVariable String brand){
+        double capacidad=vehicleService.getCapacidadPromedio(brand);
+        return new ResponseEntity<String>("La capacidad promedio de pasajeros es: "+capacidad,HttpStatus.OK);
+    }
 }
