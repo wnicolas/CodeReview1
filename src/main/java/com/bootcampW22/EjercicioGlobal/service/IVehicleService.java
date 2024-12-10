@@ -10,4 +10,8 @@ public interface IVehicleService {
     VehicleDto addVehicle(VehicleDto vehicleDto);
 
     List<VehicleDto> findByColorAndYear(String color, int year);
+
+    List<VehicleDto> getByBrandAndYearRange(String brand, int startYear, int endYear);
+
+    List<VehicleDto> findByDimensionRange(double minLength, double maxLength, double minWidth, double maxWidth);
 }

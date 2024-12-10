@@ -49,4 +49,24 @@ public class VehicleServiceImpl implements IVehicleService {
         }
         return listVehicle.stream().map(v -> mapper.convertValue(v, VehicleDto.class)).toList();
     }
+
+    @Override
+    public List<VehicleDto> getByBrandAndYearRange(String brand, int startYear, int endYear) {
+        List<Vehicle> listVehicle = vehicleRepository.getByBrandAndYearRange(brand, startYear, endYear);
+        if (listVehicle.isEmpty()) {
+            throw new NotFoundException("No se encontraron vehìculos con marca: " + brand + " y años entre: " + startYear + " y " + endYear);
+        }
+        return listVehicle.stream().map(v -> mapper.convertValue(v, VehicleDto.class)).toList();
+    }
+
+    @Override
+    public List<VehicleDto> findByDimensionRange(double minLength, double maxLength, double minWidth, double maxWidth) {
+        List<Vehicle> listVehicles = vehicleRepository.findByDimensionRange(minLength, maxLength, minWidth, maxWidth);
+        if (listVehicles.isEmpty()) {
+            throw new NotFoundException("No se encontraron vehìculos con las siguientes caracterìsticas:\n" +
+                    "Width: " + minWidth + "-" + maxWidth + "\n" +
+                    "Height: " + minLength + "-" + maxLength);
+        }
+        return listVehicles.stream().map(x -> mapper.convertValue(x, VehicleDto.class)).toList();
+    }
 }

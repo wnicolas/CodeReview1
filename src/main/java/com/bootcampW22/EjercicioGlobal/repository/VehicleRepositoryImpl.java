@@ -52,6 +52,17 @@ public class VehicleRepositoryImpl implements IVehicleRepository {
                 .filter(v -> v.getColor().equalsIgnoreCase(color) && v.getYear() == year).toList();
     }
 
+    @Override
+    public List<Vehicle> getByBrandAndYearRange(String brand, int startYear, int endYear) {
+        return listOfVehicles.stream().filter(x -> x.getBrand().equalsIgnoreCase(brand) && x.getYear() >= startYear && x.getYear() <= endYear).toList();
+    }
+
+    @Override
+    public List<Vehicle> findByDimensionRange(double minLength, double maxLength, double minWidth, double maxWidth) {
+        return listOfVehicles.stream().filter(v -> v.getHeight() >= minLength
+                && v.getHeight() <= maxLength && v.getWidth() >= minWidth && v.getWidth() <= maxWidth).toList();
+    }
+
     private void loadDataBase() throws IOException {
         File file;
         ObjectMapper objectMapper = new ObjectMapper();

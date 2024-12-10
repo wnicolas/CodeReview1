@@ -18,24 +18,41 @@ public class VehicleController {
 
     IVehicleService vehicleService;
 
-    public VehicleController(VehicleServiceImpl vehicleService){
+    public VehicleController(VehicleServiceImpl vehicleService) {
         this.vehicleService = vehicleService;
     }
 
     @GetMapping
-    public ResponseEntity<?> getVehicles(){
-        Map<Integer,String> prueba=new HashMap<>();
+    public ResponseEntity<?> getVehicles() {
+        Map<Integer, String> prueba = new HashMap<>();
         System.out.println(prueba);
         return new ResponseEntity<>(vehicleService.searchAllVehicles(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> addVehicle(@RequestBody VehicleDto vehicleDto){
-        return new ResponseEntity<>(vehicleService.addVehicle(vehicleDto),HttpStatus.CREATED);
+    public ResponseEntity<?> addVehicle(@RequestBody VehicleDto vehicleDto) {
+        return new ResponseEntity<>(vehicleService.addVehicle(vehicleDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/color/{color}/year/{year}")
-    public ResponseEntity<List<VehicleDto>> getByColorAndYear(@PathVariable String color, @PathVariable int year){
-       return new ResponseEntity<List<VehicleDto>>(vehicleService.findByColorAndYear(color,year),HttpStatus.OK);
+    public ResponseEntity<List<VehicleDto>> getByColorAndYear(@PathVariable String color, @PathVariable int year) {
+        return new ResponseEntity<List<VehicleDto>>(vehicleService.findByColorAndYear(color, year), HttpStatus.OK);
+    }
+
+    @GetMapping("/brand/{brand}/between/{startYear}/{endYear}")
+    public ResponseEntity<List<VehicleDto>> getByBrandAndYearRange(@PathVariable String brand, @PathVariable int startYear, @PathVariable int endYear) {
+        return new ResponseEntity<List<VehicleDto>>(vehicleService.getByBrandAndYearRange(brand, startYear, endYear), HttpStatus.OK);
+    }
+
+    @GetMapping("/dimensions")
+    public ResponseEntity<List<VehicleDto>> findByDimensionRange(
+            @RequestParam String length,
+            @RequestParam String width) {
+
+        String[] len = length.split("-");
+        String[] wid = width.split("-");
+
+        return new ResponseEntity<List<VehicleDto>>(vehicleService.findByDimensionRange(Double.parseDouble(len[0]),
+                Double.parseDouble(len[1]), Double.parseDouble(wid[0]), Double.parseDouble(wid[1])), HttpStatus.OK);
     }
 }

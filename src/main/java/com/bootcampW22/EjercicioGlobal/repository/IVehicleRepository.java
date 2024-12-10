@@ -12,4 +12,8 @@ public interface IVehicleRepository {
     Vehicle searchVehicleById(Long id);
 
     List<Vehicle> findByColorAndYear(String color, int year);
+
+    List<Vehicle> getByBrandAndYearRange(String brand, int startYear, int endYear);
+
+    List<Vehicle> findByDimensionRange(double minLength, double maxLength, double minWidth, double maxWidth);
 }
