@@ -2,6 +2,7 @@ package com.bootcampW22.EjercicioGlobal.repository;
 
 import com.bootcampW22.EjercicioGlobal.entity.Vehicle;
 import com.bootcampW22.EjercicioGlobal.exception.NotFoundException;
+import com.bootcampW22.EjercicioGlobal.exception.ResourceAlreadyExistException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Repository;
@@ -27,6 +28,10 @@ public class VehicleRepositoryImpl implements IVehicleRepository {
 
     @Override
     public Vehicle addVehicle(Vehicle vehicle) {
+        Optional<Vehicle> vehicleExist = listOfVehicles.stream().filter(v -> v.getId().equals(vehicle.getId())).findFirst();
+        if (vehicleExist.isPresent()) {
+            throw new ResourceAlreadyExistException("Ya existe un vehìculo con este Id: " + vehicle.getId());
+        }
         listOfVehicles.add(vehicle);
         return searchVehicleById(vehicle.getId());
     }
@@ -39,6 +44,12 @@ public class VehicleRepositoryImpl implements IVehicleRepository {
         } else {
             throw new NotFoundException("No se encontrò un vehìculo con este id:" + id);
         }
+    }
+
+    @Override
+    public List<Vehicle> findByColorAndYear(String color, int year) {
+        return listOfVehicles.stream()
+                .filter(v -> v.getColor().equalsIgnoreCase(color) && v.getYear() == year).toList();
     }
 
     private void loadDataBase() throws IOException {

@@ -8,6 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/vehicles")
 public class VehicleController {
@@ -20,12 +24,18 @@ public class VehicleController {
 
     @GetMapping
     public ResponseEntity<?> getVehicles(){
+        Map<Integer,String> prueba=new HashMap<>();
+        System.out.println(prueba);
         return new ResponseEntity<>(vehicleService.searchAllVehicles(), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> addVehicle(@RequestBody VehicleDto vehicleDto){
-
         return new ResponseEntity<>(vehicleService.addVehicle(vehicleDto),HttpStatus.CREATED);
+    }
+
+    @GetMapping("/color/{color}/year/{year}")
+    public ResponseEntity<List<VehicleDto>> getByColorAndYear(@PathVariable String color, @PathVariable int year){
+       return new ResponseEntity<List<VehicleDto>>(vehicleService.findByColorAndYear(color,year),HttpStatus.OK);
     }
 }

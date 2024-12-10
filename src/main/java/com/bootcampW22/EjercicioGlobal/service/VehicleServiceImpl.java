@@ -13,32 +13,40 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class VehicleServiceImpl implements IVehicleService{
+public class VehicleServiceImpl implements IVehicleService {
 
     IVehicleRepository vehicleRepository;
     @Autowired
     private ObjectMapper mapper;
 
-    public VehicleServiceImpl(VehicleRepositoryImpl vehicleRepository){
+    public VehicleServiceImpl(VehicleRepositoryImpl vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
     }
+
     @Override
     public List<VehicleDto> searchAllVehicles() {
         //ObjectMapper mapper = new ObjectMapper(); Se comenta debido a que es una dependencia que se puede inyenctar
         List<Vehicle> vehicleList = vehicleRepository.findAll();
-        if(vehicleList.isEmpty()){
+        if (vehicleList.isEmpty()) {
             throw new NotFoundException("No se encontró ningun auto en el sistema.");
         }
         return vehicleList.stream()
-                .map(v -> mapper.convertValue(v,VehicleDto.class))
+                .map(v -> mapper.convertValue(v, VehicleDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public VehicleDto addVehicle(VehicleDto vehicleDto) {
-        Vehicle vehicle=mapper.convertValue(vehicleDto,Vehicle.class);
-        System.out.println(vehicle);
-        return mapper.convertValue(vehicleRepository.addVehicle(vehicle),VehicleDto.class);
+        Vehicle vehicle = mapper.convertValue(vehicleDto, Vehicle.class);
+        return mapper.convertValue(vehicleRepository.addVehicle(vehicle), VehicleDto.class);
+    }
 
+    @Override
+    public List<VehicleDto> findByColorAndYear(String color, int year) {
+        List<Vehicle> listVehicle = vehicleRepository.findByColorAndYear(color, year);
+        if (listVehicle.isEmpty()) {
+            throw new NotFoundException("No se encontraron vehìculos con color: " + color + " y año: " + year);
+        }
+        return listVehicle.stream().map(v -> mapper.convertValue(v, VehicleDto.class)).toList();
     }
 }

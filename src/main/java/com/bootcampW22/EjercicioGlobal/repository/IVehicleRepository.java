@@ -10,4 +10,6 @@ public interface IVehicleRepository {
     Vehicle addVehicle(Vehicle vehicle);
 
     Vehicle searchVehicleById(Long id);
+
+    List<Vehicle> findByColorAndYear(String color, int year);
 }

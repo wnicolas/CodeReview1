@@ -1,6 +1,7 @@
 package com.bootcampW22.EjercicioGlobal.exception;
 
 import com.bootcampW22.EjercicioGlobal.dto.ExceptionDto;
+import jakarta.annotation.Resource;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,19 @@ import java.io.IOException;
 @ControllerAdvice
 public class ExceptionController {
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> notFound(NotFoundException e){
+    public ResponseEntity<?> notFound(NotFoundException e) {
         ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
         return new ResponseEntity<>(exceptionDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<?> badRequest(BadRequestException e) {
+        return new ResponseEntity<>(new ExceptionDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    public ResponseEntity<?> resourceAlreadyExist(ResourceAlreadyExistException e) {
+        return new ResponseEntity<>(new ExceptionDto(e.getMessage()), HttpStatus.CONFLICT);
     }
 
 
