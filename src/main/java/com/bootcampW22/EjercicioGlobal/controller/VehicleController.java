@@ -1,11 +1,12 @@
 package com.bootcampW22.EjercicioGlobal.controller;
 
+import com.bootcampW22.EjercicioGlobal.dto.UpdateFuelTypeDto;
 import com.bootcampW22.EjercicioGlobal.dto.VehicleDto;
-import com.bootcampW22.EjercicioGlobal.entity.Vehicle;
 import com.bootcampW22.EjercicioGlobal.service.IVehicleService;
 import com.bootcampW22.EjercicioGlobal.service.VehicleServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -29,10 +30,7 @@ public class VehicleController {
         return new ResponseEntity<>(vehicleService.searchAllVehicles(), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<?> addVehicle(@RequestBody VehicleDto vehicleDto) {
-        return new ResponseEntity<>(vehicleService.addVehicle(vehicleDto), HttpStatus.CREATED);
-    }
+
 
     @GetMapping("/color/{color}/year/{year}")
     public ResponseEntity<List<VehicleDto>> getByColorAndYear(@PathVariable String color, @PathVariable int year) {
@@ -60,5 +58,24 @@ public class VehicleController {
     public ResponseEntity<String> getCapacidadPromedio(@PathVariable String brand){
         double capacidad=vehicleService.getCapacidadPromedio(brand);
         return new ResponseEntity<String>("La capacidad promedio de pasajeros es: "+capacidad,HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/update_fuel")
+    public ResponseEntity<String> updateFuelType(@RequestBody UpdateFuelTypeDto updateFuelTypeDto, @PathVariable int id){
+        return new ResponseEntity<String>(vehicleService.updateFuelType(updateFuelTypeDto,id),HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteById(@PathVariable int id){
+            return new ResponseEntity<String>(vehicleService.deleteById(id), HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/batch")
+    public ResponseEntity<String> batchAdding(@RequestBody List<VehicleDto> vehiclesDto){
+        return new ResponseEntity<String>(vehicleService.batchAdding(vehiclesDto), HttpStatus.CREATED);
+    }
+    @PostMapping
+    public ResponseEntity<?> addVehicle(@RequestBody VehicleDto vehicleDto) {
+        return new ResponseEntity<>(vehicleService.addVehicle(vehicleDto), HttpStatus.CREATED);
     }
 }

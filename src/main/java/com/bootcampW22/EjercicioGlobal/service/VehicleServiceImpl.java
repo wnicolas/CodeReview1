@@ -1,5 +1,6 @@
 package com.bootcampW22.EjercicioGlobal.service;
 
+import com.bootcampW22.EjercicioGlobal.dto.UpdateFuelTypeDto;
 import com.bootcampW22.EjercicioGlobal.dto.VehicleDto;
 import com.bootcampW22.EjercicioGlobal.entity.Vehicle;
 import com.bootcampW22.EjercicioGlobal.exception.NotFoundException;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,7 +74,34 @@ public class VehicleServiceImpl implements IVehicleService {
 
     @Override
     public double getCapacidadPromedio(String brand) {
-        return vehicleRepository.findAll().stream().filter(x->x.getBrand().equalsIgnoreCase(brand))
-        .mapToInt(Vehicle::getPassengers).average().orElse(0.0);
+        return vehicleRepository.findAll().stream().filter(x -> x.getBrand().equalsIgnoreCase(brand))
+                .mapToInt(Vehicle::getPassengers).average().orElse(0.0);
+    }
+
+    @Override
+    public String updateFuelType(UpdateFuelTypeDto updateFuelTypeDto, int id) {
+        Vehicle vehicle = vehicleRepository.findById(id);
+        if (vehicle == null)
+            throw new NotFoundException("No se encontrò ningùn vehìculo con el id: " + id);
+
+        vehicle.setFuel_type(updateFuelTypeDto.getFuel_type());
+        return "Tipo de combustible actualizado correctamente.";
+    }
+
+    @Override
+    public String deleteById(int id) {
+        Vehicle vehicle = vehicleRepository.findById(id);
+        if (vehicle == null)
+            throw new NotFoundException("No se encontrò ningùn vehìculo con el id: " + id);
+
+        vehicleRepository.deleteById(id);
+
+        return "Vehìculo con id " + id + " fue eliminado correctamente.";
+    }
+
+    @Override
+    public String batchAdding(List<VehicleDto> vehicleDtos) {
+        vehicleDtos.forEach(x -> vehicleRepository.addVehicle(mapper.convertValue(x, Vehicle.class)));
+        return "Vehìculos creados exitosamente";
     }
 }

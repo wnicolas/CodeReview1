@@ -1,5 +1,6 @@
 package com.bootcampW22.EjercicioGlobal.service;
 
+import com.bootcampW22.EjercicioGlobal.dto.UpdateFuelTypeDto;
 import com.bootcampW22.EjercicioGlobal.dto.VehicleDto;
 
 import java.util.List;
@@ -16,4 +17,10 @@ public interface IVehicleService {
     List<VehicleDto> findByDimensionRange(double minLength, double maxLength, double minWidth, double maxWidth);
 
     double getCapacidadPromedio(String brand);
+
+    String updateFuelType(UpdateFuelTypeDto updateFuelTypeDto, int id);
+
+    String deleteById(int id);
+
+    String batchAdding(List<VehicleDto>  vehicleDtos);
 }

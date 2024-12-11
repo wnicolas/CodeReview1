@@ -63,6 +63,17 @@ public class VehicleRepositoryImpl implements IVehicleRepository {
                 && v.getHeight() <= maxLength && v.getWidth() >= minWidth && v.getWidth() <= maxWidth).toList();
     }
 
+    @Override
+    public Vehicle findById(int id) {
+        return listOfVehicles.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        listOfVehicles.removeIf(x -> x.getId() == id);
+
+    }
+
     private void loadDataBase() throws IOException {
         File file;
         ObjectMapper objectMapper = new ObjectMapper();

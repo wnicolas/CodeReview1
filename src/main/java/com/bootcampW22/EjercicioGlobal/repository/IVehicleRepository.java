@@ -16,4 +16,8 @@ public interface IVehicleRepository {
     List<Vehicle> getByBrandAndYearRange(String brand, int startYear, int endYear);
 
     List<Vehicle> findByDimensionRange(double minLength, double maxLength, double minWidth, double maxWidth);
+
+    Vehicle findById(int id);
+
+    void deleteById(int id);
 }
